@@ -39,17 +39,29 @@ func (d *disp) Start() *disp {
 // relays it to the WorkPool. The WorkPool is shared between
 // the workers.
 func (d *disp) process() {
-	for {
-		select {
-		case job := <-d.WorkChan: // listen to any submitted job on the WorkChan
-			// wait for a worker to submit JobChan to Queue
-			// note that this Queue is shared among all workers.
-			// Whenever there is an available JobChan on Queue pull it
-			jobChan := <-d.Queue
+	/*
+		for {
+			select {
+			case job := <-d.WorkChan: // listen to any submitted job on the WorkChan
+				// wait for a worker to submit JobChan to Queue
+				// note that this Queue is shared among all workers.
+				// Whenever there is an available JobChan on Queue pull it
+				jobChan := <-d.Queue
 
-			// Once a jobChan is available, send the submitted Job on this JobChan
-			jobChan <- job
+				// Once a jobChan is available, send the submitted Job on this JobChan
+				jobChan <- job
+			}
 		}
+	*/
+	for {
+		job := <-d.WorkChan // listen to any submitted job on the WorkChan
+		// wait for a worker to submit JobChan to Queue
+		// note that this Queue is shared among all workers.
+		// Whenever there is an available JobChan on Queue pull it
+		jobChan := <-d.Queue
+
+		// Once a jobChan is available, send the submitted Job on this JobChan
+		jobChan <- job
 	}
 }
 
