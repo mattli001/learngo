@@ -13,9 +13,16 @@ func init() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds | log.Lshortfile)
 }
 
+func callApi(num, id string) {
+	log.Printf("num %s, id %s\n", num, id)
+	time.Sleep(3 * time.Second)
+	log.Printf("callApi num %s, id %s exit\n", num, id)
+	//log.Printf("%d  :: ok", id)
+}
+
 func main() {
 	start := time.Now()
-	dd := dispatcher.New(2).Start()
+	dd := dispatcher.New(2).Start(callApi)
 
 	// terms := []int{1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3,
 	// 	4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3,

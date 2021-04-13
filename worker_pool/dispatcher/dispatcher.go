@@ -24,10 +24,10 @@ type disp struct {
 }
 
 // Start creates pool of num count of workers.
-func (d *disp) Start() *disp {
+func (d *disp) Start(callback worker.Callback) *disp {
 	l := len(d.Workers)
 	for i := 1; i <= l; i++ {
-		wrk := worker.New(i, make(worker.JobChannel), d.Queue, make(chan struct{}))
+		wrk := worker.New(i, make(worker.JobChannel), d.Queue, make(chan struct{}), callback)
 		wrk.Start()
 		d.Workers = append(d.Workers, wrk)
 	}
